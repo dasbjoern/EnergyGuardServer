@@ -3,6 +3,10 @@ import java.net.*;
 import javax.xml.catalog.Catalog;
 
 import java.io.*;
+
+
+
+
 // import tcpclient.TCPClient;
 public class EnergyAsk {
     public static void main( String[] args) throws Exception{
@@ -30,10 +34,11 @@ public class EnergyAsk {
                 if(readByte != -1 ){
                     recvData.write(readSomeBytes, 0, readByte);
                 }
-            // }
-
+                // }
+                String[] clientData = datasplit(recvData.toString());
                 String serverInput = recvData.toString();
-                System.out.println(serverInput);
+                for(int i = 0; i < clientData.length; i++)
+                System.out.println(clientData[i]);
                 // System.out.println(serverInput);
 
                 connectionAsk.getOutputStream().write(recvData.toByteArray());
@@ -44,11 +49,19 @@ public class EnergyAsk {
                 byte[] clientResponse;
 
 
-        
+                
             // connectionAsk.getOutputStream().flush();
             connectionAsk.close();
 
         }//end while
         // askServerSocket.close();
     } //main
+    public static String[] datasplit(String clientData)
+    {
+        String[] Data;
+        Data = clientData.split("?");
+
+        return Data;
+    }
+
 } 

@@ -9,7 +9,7 @@ public class testClient {
         String data = args[0];
         // System.out.println(args[0]);
 
-        Socket clientSocket = new Socket("127.0.0.1", 8888, null, 8080);
+        Socket clientSocket = new Socket("192.168.137.200", 8888);
         // 
         
         int bufferSize = 1024;
