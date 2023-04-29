@@ -5,23 +5,31 @@ class ArduinoData:
     MACAddress = "NoMAC"
     shutdown = False
     timer = 0
-    energyData[100] = {0}
+    powerData = []
+    myMap: map
 
     def __init__(self, MACaddr, shutdown, timer, powerData):
         self.MACAddress = MACaddr
         self.shutdown = shutdown
         self.timer = timer
-        self.setEnergyData(powerData)
+        self.powerData.append(powerData)
+        # self.setEnergyData(powerData)
+    def getMAC(self):
+        return self.MACAddress  
+    
+    def setPowerData(self, powerData):
+        self.powerData.append(powerData)
+        # currentTime = datetime.datetime.now()
+        # timeStamp = currentTime.timestamp()
+        # dateTime = datetime.fromtimestamp(timeStamp)
         
-    
-    def setEnergyData(self, powerData):
-        currentTime = datetime.datetime.now()
-
-        timeStamp = currentTime.timestamp()
-        dateTime = datetime.fromtimestamp(timeStamp)
-        self.energyData.put(dateTime, powerData)
-    
+        # self.myMap.put(dateTime, powerData)
+    def getPowerData(self):
+        return self.powerData
     
 
 
 
+# arduino = ArduinoData(1,1,1,1)
+# print(arduino.energyData[0])
+# print()
