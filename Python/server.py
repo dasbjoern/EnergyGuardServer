@@ -16,7 +16,7 @@ while True:
         print(data.decode())
     
 
-        clientSocket.sendall(b"ARDUINO?MAC?0?TIMER?DATA?.")
+        clientSocket.sendall(b"ARDUINO?MAC?0?36000?1.3412?.")
 
         clientSocket.close()
     except:

@@ -1,41 +1,36 @@
 import socket
 import time
+import sys
 from ArduinoData import ArduinoData
+import sendUpdate
+
+
 # "192.168.137.21"
 Host = "127.0.0.1"
 Port = 8888
 arduinos = []
 
-def updateArduinos(arduinos, MACaddr, shutdownFlag, timer, powerData):
-    if(len(arduinos) > 0):
-        for ard in arduinos:
-            if ard.getMAC() == MACaddr:
-                ard.setPowerData(powerData)
-                print(ard.getPowerData())
-
-    else:
-        arduinos.append(ArduinoData(MACaddr, shutdownFlag, timer, powerData))
-
-def interpretData(arduinos, dataSplit):
-    isProtocol = False
-    if len(dataSplit) == 6:
-        if(dataSplit[0] == "ARDUINO"):
-            updateArduinos(arduinos, dataSplit[1], 1,dataSplit[3],1)
-            isProtocol = True
-    
-
-    # print(len(dataSplit))
-
-    return isProtocol
+#ADD PORT VIA COMMANDLINE: python TCPClient.py <port>
+if len(sys.argv) > 1:
+    # print(str(sys.argv[1]))
+    try:
+        Port = int(sys.argv[1])
+        print("Connecting to port:", Port)
+    except ValueError:
+        print("Not a number: Default port set to 8888") 
+    except:
+        print("Unexpected error. ")
+# code start
 
 while True:
 
     time.sleep(1)
     try:
-        
+
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((Host, Port))
-        clientSocket.sendall(b"OK?0?36000\n")
+        # protocol: OK?SHUTDOWNFLAG?TIMERSEC?.
+        clientSocket.sendall(b"OK?0?36000?.\n")
         data = clientSocket.recv(1024)
 
         receiviedData = data.decode()
@@ -44,7 +39,7 @@ while True:
             print(x)
 
         # print(dataSplit[0])
-        if(interpretData(arduinos, dataSplit)):
+        if(sendUpdate.interpretData(arduinos, dataSplit)):
             print("PROTOCOL: OK ")
         else:
             print("PROTOCOL: MISSMATCH ")

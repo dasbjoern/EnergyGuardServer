@@ -26,7 +26,10 @@ class ArduinoData:
         # self.myMap.put(dateTime, powerData)
     def getPowerData(self):
         return self.powerData
-    
+    def setShutdown(self, shutdown):
+        self.shutdown = shutdown
+    def getShutdown(self):
+        return self.shutdown
 
 
 
