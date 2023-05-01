@@ -14,7 +14,6 @@ lock = threading.Lock()
 
 def tcpClient(Host, Port):
     try:
-        lock.acquire()
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((Host, Port))
         # protocol: OK?SHUTDOWNFLAG?TIMERSEC?.
@@ -25,6 +24,7 @@ def tcpClient(Host, Port):
         for x in dataSplit:
             print(x)
 
+        lock.acquire()
         # print(dataSplit[0])
         if(sendUpdate.interpretData(arduinos, dataSplit)):
             print("PROTOCOL: OK ")
@@ -57,20 +57,21 @@ def tcpClient(Host, Port):
 
     # print(data.decode())
 
+j = 0
+while(j < 5):
+    try:
+        i = 0
+        while(i < 3):
+            aThread = Thread(target = tcpClient, args=(Hostname,8888+i)).start()
 
-try:
-    i = 0
-    while(i < 3):
-        aThread = Thread(target = tcpClient, args=(Hostname,8888+i)).start()
+            i = i +1
 
-        i = i +1
-
-    print(aThread.join())
-
+        aThread.join()
+        Thread.sleep(10)
+    except:
+        print("Thread could not be created")
+    j= j+1
         
-except:
-    print("Thread could not be created")
-
 
         
     

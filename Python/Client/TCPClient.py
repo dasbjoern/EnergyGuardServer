@@ -1,7 +1,7 @@
 import socket
 import time
 import sys
-from ArduinoData import ArduinoData
+# from ArduinoData import ArduinoData
 import sendUpdate
 
 
@@ -29,7 +29,7 @@ while True:
 
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((Host, Port))
-        # protocol: OK?SHUTDOWNFLAG?TIMERSEC?.
+        # protocol: OK?SHUTDOWNFLAG?TIMERSEC?DATA.
         clientSocket.sendall(b"OK?0?36000?.\n")
         data = clientSocket.recv(1024)
 
