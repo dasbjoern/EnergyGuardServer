@@ -6,10 +6,10 @@ import sendUpdate
 
 
 # "192.168.137.21"
-Host = "127.0.0.1"
+Host = "192.168.137.210"
 Port = 8888
 arduinos = []
-
+shutdownFlag = 0
 #ADD PORT VIA COMMANDLINE: python TCPClient.py <port>
 if len(sys.argv) > 1:
     # print(str(sys.argv[1]))
@@ -22,6 +22,8 @@ if len(sys.argv) > 1:
         print("Unexpected error. ")
 # code start
 
+
+
 while True:
 
     time.sleep(1)
@@ -30,7 +32,17 @@ while True:
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((Host, Port))
         # protocol: OK?SHUTDOWNFLAG?TIMERSEC?DATA.
-        clientSocket.sendall(b"OK?0?36000?.\n")
+        sendData = "OK?"
+        flag = str(shutdownFlag)
+        sendData = sendData + flag
+        sendData = sendData + "?.\n"
+
+        # sendData.concat("?.\n")
+
+        print(sendData)
+
+        clientSocket.sendall(sendData.encode("ascii"))
+        shutdownFlag = (shutdownFlag +1)%2
         data = clientSocket.recv(1024)
 
         receiviedData = data.decode()
