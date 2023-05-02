@@ -7,9 +7,9 @@ storage = firebase.storage()
 database = firebase.database()
 
 db = firebase.database()
-data = {
-  'name':"ABC",
-  'age':"12"
-}
-db.push(data)
-print("hello")
+userData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/testflags/").get()
+shutdown = userData[0].val()
+
+print(shutdown)
+
+
