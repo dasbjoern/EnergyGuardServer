@@ -31,9 +31,8 @@ def tcpClient(host, port, sendData):
             print("Unexpected error. ")
 
     shutdownFlag = 0
-
-  
-    time.sleep(1)
+    
+    #time.sleep(1)
     try:
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((host, port))
