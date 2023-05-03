@@ -5,29 +5,31 @@ import sys
 import sendUpdate
 
 # port = 8888
+
 arduinos = []
 #ADD PORT VIA COMMANDLINE: python TCPClient.py <port>
-if len(sys.argv) > 1:
-    # print(str(sys.argv[1]))
-    try:
-        port = int(sys.argv[1])
-        print("Connecting to port:", port)
-        if len(sys.argv) > 2:
-            try:
-                host = sys.argv[2]
-            except:
-                print("System argument HOST Error.")
-    except ValueError:
-        print("Not a number: Default port set to 8888") 
-    except:
-        print("Unexpected error. ")
+
 # code start
 
 def tcpClient(host="127.0.0.1", port = 8888, sendData=""):
     # "192.168.137.21"
     # Host = "192.168.137.210"
     # Port = 8888
-    
+    if len(sys.argv) > 1:
+    # print(str(sys.argv[1]))
+        try:
+            port = int(sys.argv[1])
+            print("Connecting to port:", port)
+            if len(sys.argv) > 2:
+                try:
+                    host = sys.argv[2]
+                except:
+                    print("System argument HOST Error.")
+        except ValueError:
+            print("Not a number: Default port set to 8888") 
+        except:
+            print("Unexpected error. ")
+
     shutdownFlag = 0
 
     while True:
