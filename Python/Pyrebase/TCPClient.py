@@ -4,38 +4,43 @@ import sys
 # from ArduinoData import ArduinoData
 import sendUpdate
 
-Port = 8888
+# port = 8888
+arduinos = []
 #ADD PORT VIA COMMANDLINE: python TCPClient.py <port>
 if len(sys.argv) > 1:
     # print(str(sys.argv[1]))
     try:
-        Port = int(sys.argv[1])
-        print("Connecting to port:", Port)
+        port = int(sys.argv[1])
+        print("Connecting to port:", port)
+        if len(sys.argv) > 2:
+            try:
+                host = sys.argv[2]
+            except:
+                print("System argument HOST Error.")
     except ValueError:
         print("Not a number: Default port set to 8888") 
     except:
         print("Unexpected error. ")
 # code start
 
-def tcpClient(host, port):
+def tcpClient(host="127.0.0.1", port = 8888, sendData=""):
     # "192.168.137.21"
-    Host = "192.168.137.210"
-    Port = 8888
-    arduinos = []
+    # Host = "192.168.137.210"
+    # Port = 8888
+    
     shutdownFlag = 0
 
     while True:
-
         time.sleep(1)
         try:
 
             clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            clientSocket.connect((Host, Port))
+            clientSocket.connect((host, port))
         # protocol: OK?SHUTDOWNFLAG?TIMERSEC?DATA.
-            sendData = "OK?"
-            flag = str(shutdownFlag)
-            sendData = sendData + flag
-            sendData = sendData + "?.\n"
+            # sendData = "OK?"
+            # flag = str(shutdownFlag)
+            # sendData = sendData + flag
+            # sendData = sendData + "?.\n"
 
             # sendData.concat("?.\n")
 

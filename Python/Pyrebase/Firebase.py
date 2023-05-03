@@ -3,12 +3,14 @@ from firebaseConfig import firebaseConfig
 import time
 from threading import Thread
 import clientThread
-Hostname = "192.168.137.186"
+import TCPClient
+# Hostname = "192.168.137.94"
+Hostname = "127.0.0.1"
 Port = 8888
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 
-storage = firebase.storage()
+# storage = firebase.storage()
 database = firebase.database()
 
 db = firebase.database()
@@ -24,7 +26,8 @@ while(True):
   sendData = sendData + flag
   sendData = sendData + "?.\n"
   
-  clientThread.createThread(Hostname, sendData)
+  TCPClient.tcpClient(Hostname, Port, sendData)
+  # clientThread.createThread(Hostname, sendData)
 
 
 # print(userData.key())

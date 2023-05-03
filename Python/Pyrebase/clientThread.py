@@ -5,21 +5,28 @@ import time
 import sys
 from ArduinoData import ArduinoData
 import sendUpdate
-Hostname = "192.168.137.186"
-Port = 8888
+# hostname = "192.168.137.94"
+# port = 8888
 arduinos = []
 lock = threading.Lock()
 
-def createThread(Hostname,data):
+# class clientThread:
+#     hostname = "192.168.137.186"
+#     Port = 8888
 
+#     def __init__(self,hostname, port):
+#         self.hostname = hostname
+#         self.port = port
+
+def createThread(hostname,data):
 
     try:
-        i = 0
-        aThread = Thread(target = tcpClient, args=(Hostname,8888, data)).start()
-
-
-        aThread.join()
-        Thread.sleep(10)
+        aThread = Thread(target = tcpClient, args=(hostname,8888, data)).start()
+        try:
+            aThread.join()
+            Thread.sleep(10)
+        except:
+            print("Could not join")
     except:
         print("Thread could not be created")
    
