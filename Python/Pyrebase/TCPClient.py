@@ -11,7 +11,7 @@ arduinos = []
 
 # code start
 
-def tcpClient(host="127.0.0.1", port = 8888, sendData=""):
+def tcpClient(host, port, sendData):
     # "192.168.137.21"
     # Host = "192.168.137.210"
     # Port = 8888
@@ -32,12 +32,12 @@ def tcpClient(host="127.0.0.1", port = 8888, sendData=""):
 
     shutdownFlag = 0
 
-    while True:
-        time.sleep(1)
-        try:
+  
+time.sleep(1)
+try:
 
-            clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            clientSocket.connect((host, port))
+    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    clientSocket.connect((host, port))
         # protocol: OK?SHUTDOWNFLAG?TIMERSEC?DATA.
             # sendData = "OK?"
             # flag = str(shutdownFlag)
@@ -46,29 +46,29 @@ def tcpClient(host="127.0.0.1", port = 8888, sendData=""):
 
             # sendData.concat("?.\n")
 
-            print(sendData)
+    print(sendData)
 
-            clientSocket.sendall(sendData.encode("ascii"))
-            shutdownFlag = (shutdownFlag +1)%2
-            data = clientSocket.recv(1024)
+    clientSocket.sendall(sendData.encode("ascii"))
+    shutdownFlag = (shutdownFlag +1)%2
+    data = clientSocket.recv(1024)
 
-            receiviedData = data.decode()
-            dataSplit = receiviedData.split("?")
-            for x in dataSplit:
-                print(x)
-            # print(dataSplit[0])
-            if(sendUpdate.interpretData(arduinos, dataSplit)):
-                print("PROTOCOL: OK ")
-            else:
-                print("PROTOCOL: MISSMATCH ")
+    receiviedData = data.decode()
+    dataSplit = receiviedData.split("?")
+    for x in dataSplit:
+        print(x)
+        # print(dataSplit[0])
+    if(sendUpdate.interpretData(arduinos, dataSplit)):
+        print("PROTOCOL: OK ")
+    else:
+        print("PROTOCOL: MISSMATCH ")
     
-            clientSocket.close()
-        except TimeoutError:
-            print("Socket timeout. ")
-        except ConnectionRefusedError:
-            print("Connection could not be made. ")
-        except:
-            print("Unexpected error. ")
+    clientSocket.close()
+except TimeoutError:
+    print("Socket timeout. ")
+except ConnectionRefusedError:
+    print("Connection could not be made. ")
+except:
+    print("Unexpected error. ")
 
 
     

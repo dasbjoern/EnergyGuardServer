@@ -24,7 +24,7 @@ def createThread(hostname,data):
         aThread = Thread(target = tcpClient, args=(hostname,8888, data)).start()
         try:
             aThread.join()
-            Thread.sleep(10)
+            # Thread.sleep(10)
         except:
             print("Could not join")
     except:
@@ -33,6 +33,7 @@ def createThread(hostname,data):
         
 
 def tcpClient(Host, Port, senddata):
+    time.sleep(1)
     try:
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((Host, Port))
