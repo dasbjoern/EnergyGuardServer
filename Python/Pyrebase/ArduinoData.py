@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import time
 class ArduinoData:
 
     MACAddress = "NoMAC"
@@ -12,7 +12,7 @@ class ArduinoData:
     def __init__(self, MACaddr, shutdown, powerData):
         self.MACAddress = MACaddr
         self.shutdown = shutdown
-        self.powerData.append(powerData)
+        self.powerData.append([powerData,time.time()])
 
         # self.setEnergyData(powerData)
     def getMAC(self):
@@ -20,11 +20,11 @@ class ArduinoData:
     
     def setPowerData(self, powerData):
         if(len(self.powerData) == 10):
-            self.setPowerDataAvg()
+            # self.setPowerDataAvg()
             self.powerData.clear()
-            self.powerData.append(powerData)
+            self.powerData.append([powerData,time.time()])
         else:
-            self.powerData.append(powerData)
+            self.powerData.append([powerData,time.time()])
         # currentTime = datetime.datetime.now()
         # timeStamp = currentTime.timestamp()
         # dateTime = datetime.fromtimestamp(timeStamp)
@@ -39,6 +39,10 @@ class ArduinoData:
         return self.powerDataAvg
     def getPowerData(self):
         return self.powerData
+    def getPowerDataLatest(self):
+        length = len(self.powerData)
+        print(length)
+        return self.powerData[length-1]
     def setShutdown(self, shutdown):
         self.shutdown = shutdown
     def getShutdown(self):

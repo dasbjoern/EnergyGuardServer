@@ -18,9 +18,11 @@ shutdownFlag = 0
 array = [["E",2, 3], ["F", 2,3]]
 if(True):
   print("...// Gathering data from Firebase. //...")
-  userData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/testdata/").get()
-  array = userData.val()
-  print(array[0])
+  # userData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/testdata/").get()
+  data =  db.child("/Energyconsumption/").get()
+  print(len(data.val()))
+  # array = userData.val()
+  # print(array[0])
   # print(userData.val())
   # print(array.get())
   # print(array[0])

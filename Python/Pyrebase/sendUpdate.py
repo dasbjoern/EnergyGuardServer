@@ -19,7 +19,6 @@ def updateArduino(arduinos, MACaddr, shutdownFlag, powerData):
             arduinos.append(ArduinoData(MACaddr, bool(shutdownFlag), float(powerData)))
         except ValueError:
             print("Could not parse number.")
-
 def interpretData(arduinos, dataSplit):
     isProtocol = False
     if len(dataSplit) == 5:
