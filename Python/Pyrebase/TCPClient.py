@@ -6,12 +6,12 @@ import sendUpdate
 
 # port = 8888
 
-arduinos = []
+# arduinos = []
 #ADD PORT VIA COMMANDLINE: python TCPClient.py <port>
 
 # code start
 
-def tcpClient(host, port, sendData):
+def tcpClient(host, port, sendData, arduinos):
     # "192.168.137.21"
     # Host = "192.168.137.210"
     # Port = 8888
@@ -31,7 +31,7 @@ def tcpClient(host, port, sendData):
             print("Unexpected error. ")
 
     shutdownFlag = 0
-    
+
     #time.sleep(1)
     try:
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

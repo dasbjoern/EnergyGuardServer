@@ -45,6 +45,8 @@ class ArduinoData:
         return self.shutdown
     def setTimer(self, time):
         self.timer= time
+    def getTimer(self):
+        return self.timer
     def setAddr(self, ip, port=8888):
         self.ip = ip
         self.ip = port
