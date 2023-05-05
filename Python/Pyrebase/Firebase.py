@@ -77,6 +77,7 @@ while(True):
     sendData = sendData + "?.\n"
     print("... Sending data to arduino: ", Hostname,":",Port, " ...")
     TCPClient.tcpClient(Hostname, Port, sendData, arduinos)
+    # db.child("/Energyconsumption/").child(0).set([0,0])
     length = len(db.child("/Energyconsumption/").get().val())
     print("length:", length)
     # print(arduinos[0].getPowerDataLatest())
