@@ -52,8 +52,8 @@ def tcpClient(host, port, sendData, arduinos):
 
         receiviedData = data.decode()
         dataSplit = receiviedData.split("?")
-        for x in dataSplit:
-            print(x)
+        # for x in dataSplit:
+            # print(x)
         # print(dataSplit[0])
         if(sendUpdate.interpretData(arduinos, dataSplit)):
             print("PROTOCOL: OK ")

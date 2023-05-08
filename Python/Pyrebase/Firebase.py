@@ -5,19 +5,21 @@ from threading import Thread
 import clientThread
 import TCPClient
 import timerStatus
-Hostname = "192.168.137.15"
+
+
+Hostname = "192.168.137.174"
 # Hostname = "127.0.0.1"
 Port = 8888
 arduinos = []
 
 firebase = pyrebase.initialize_app(firebaseConfig)
-db = firebase.database()
 timer = 0
 timerStart = 0
 timerFinished = True
 shutdownFlag = 0
 timeLoop = time.time()
 while(True):
+  db = firebase.database()  
   # time.sleep(1)
   if(time.time() - timeLoop >= 1):
     # print(time.time())
@@ -81,7 +83,10 @@ while(True):
     length = len(db.child("/Energyconsumption/").get().val())
     print("length:", length)
     # print(arduinos[0].getPowerDataLatest())
-    db.child("/Energyconsumption/").child(length).set(arduinos[0].getPowerDataLatest())
+    
+    # UPLOAD POWERDATA change child(1) to child(length)
+    db.child("/Energyconsumption/").child(1).set(arduinos[0].getPowerDataLatest()) 
+
   # clientThread.createThread(Hostname, sendData)
   
 
