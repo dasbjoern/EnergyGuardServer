@@ -28,6 +28,4 @@ def interpretData(arduinos, dataSplit):
             isProtocol = True
 
     return isProtocol
-
-def updatePowerdata(powerData):
     

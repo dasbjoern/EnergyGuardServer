@@ -2,12 +2,12 @@ import pyrebase
 from firebaseConfig import firebaseConfig
 import time
 from threading import Thread
-import clientThread
+# import clientThread
 import TCPClient
 import timerStatus
 
 
-Hostname = "192.168.137.174"
+Hostname = "192.168.137.94"
 # Hostname = "127.0.0.1"
 Port = 8888
 arduinos = []
