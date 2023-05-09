@@ -141,7 +141,7 @@ while(True):
     for i in range(len(arduinos)):
       if(arduinos[i].getIP() != "NoIP"):
         try:
-          TCPClient.tcpClient(arduinos[i].getIP(), Port+i, sendData, arduinos[i])
+          TCPClient.tcpClient(arduinos[i].getIP(), Port, sendData, arduinos[i])
           time.sleep(0.02)
         except:
           print("connection failed with IP: ", arduinos[i].getIP)
