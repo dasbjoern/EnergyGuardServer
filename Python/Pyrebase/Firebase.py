@@ -5,19 +5,34 @@ from threading import Thread
 # import clientThread
 import TCPClient
 import timerStatus
+import math
 
 
-Hostname = "192.168.137.94"
-# Hostname = "127.0.0.1"
+# Hostname = "192.168.137.94"
+Hostname = "127.0.0.1"
 Port = 8888
 arduinos = []
 
 firebase = pyrebase.initialize_app(firebaseConfig)
+db = firebase.database() 
+macaddressData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address").get()
+# macaddress = userData.val()
+
+macArr = []
+for x in macaddressData.each():
+  macArr.append([x.key(),x.val()])
+
+Hostname = macArr[0][1]
+print(Hostname)
 timer = 0
 timerStart = 0
 timerFinished = True
 shutdownFlag = 0
 timeLoop = time.time()
+consumptionIndex = 0
+deviceID = 0
+#todo read in all devices FIREBASE
+
 while(True):
   db = firebase.database()  
   # time.sleep(1)
@@ -28,12 +43,21 @@ while(True):
     sendData = "OK?"
     # print("...// Gathering data from Firebase. //...")
     try:
-      userData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/devicelist/value/0/isTurnedOn/value").get()
+      # userData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/0/isTurnedOn/value").get()
+
+      statusData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/0/").get().val()
+      print(consumptionIndex)
+
+      isActive = statusData['isActive']
+      consumptionIndex = statusData['consumptionIndex']
+      shutdownFlag = statusData['isTurnedOn']
+      timer = statusData['timer']
+      timerEndDate = statusData['timerEndDate']
+
       # userData.val()
       # print("PRINT: ", userData.val())
       # for x in userData:
       # print(x.val())
-      shutdownFlag = userData.val()
       print(shutdownFlag)
       if(shutdownFlag == False):
         shutdownFlag = 0
@@ -46,7 +70,8 @@ while(True):
       print("pyrebase error shutdown.")
   
     try:
-        timer = db.child("/Timer/").get().val()
+        timer = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/0/timerEndDate").get().val()
+        timer = timer/1000
         print("TIME", timer)
 
   #     if type(timer) == str:
@@ -55,12 +80,12 @@ while(True):
           timerStart = time.time()
           timerFinished = False
         if(timerStart != 0  and timerFinished == False):
-          timerFinished = timerStatus.timerStatus(timer, timerStart)
+          timerFinished = timerStatus.timerStatus(timer)
           if timerFinished:
             shutdownFlag = 0
             timerFinished = True
-            db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/devicelist/value/0/isTurnedOn/value").set(False)
-            db.child("/Timer/").set(0)
+            db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/0/").child('isTurnedOn').set(False)
+            db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/0/").child('timerEndDate').set(0)
 
   #     # print("TIMER: ")
     except:
@@ -85,8 +110,9 @@ while(True):
     # print(arduinos[0].getPowerDataLatest())
     
     # UPLOAD POWERDATA change child(1) to child(length)
-    db.child("/Energyconsumption/").child(1).set(arduinos[0].getPowerDataLatest()) 
-
+    db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/consumption/value/0/values").child(consumptionIndex).set(arduinos[0].getPowerDataLatest())
+    # consumptionIndex = consumptionIndex +1
+    db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/0/").child('consumptionIndex').set(consumptionIndex+1)
   # clientThread.createThread(Hostname, sendData)
   
 

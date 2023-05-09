@@ -1,10 +1,10 @@
 # import TCPClient
 import time
 
-def timerStatus(timer ,starttime):
+def timerStatus(timer):
     timerReached = False
-    print("TIMER: ", round(time.time() - starttime))
-    if(timer <= round(time.time() - starttime)):
+    print("TIMER: ", round(time.time() - timer))
+    if(0 <= round(time.time() - timer)):
         timerReached = True
     return timerReached
 

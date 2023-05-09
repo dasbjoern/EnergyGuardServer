@@ -3,10 +3,13 @@ from datetime import datetime
 class ArduinoData:
 
     MACAddress = "NoMAC"
+    deviceID = 0
     shutdown = False
     powerData = []
-    timer = 0
+    timer = False
+    timerTime = 0
     powerDataAvg = 0
+    consumptionIndex = 0
     (ip, port) = ("LOCALHOST",8888)
 
     def __init__(self, MACaddr, shutdown, powerData):
@@ -29,7 +32,11 @@ class ArduinoData:
         # timeStamp = currentTime.timestamp()
         # dateTime = datetime.fromtimestamp(timeStamp)
         # self.myMap.put(dateTime, powerData)
-        
+    def setDeviceID(self, id):
+        self.deviceID = id
+    def getDeviceID(self):
+        return self.deviceID
+      
     def setPowerDataAvg(self):
         sum = 0
         for x in self.powerData:
@@ -43,8 +50,14 @@ class ArduinoData:
         self.shutdown = shutdown
     def getShutdown(self):
         return self.shutdown
+    def setTimertime(self, timerTime):
+        self.timerTime = timerTime
+    def getTimertime(self):
+        return self.timerTime
     def setTimer(self, time):
         self.timer= time
+    def getTimer(self):
+        return self.timer
     def setAddr(self, ip, port=8888):
         self.ip = ip
         self.ip = port
