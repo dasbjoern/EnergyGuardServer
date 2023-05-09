@@ -3,7 +3,7 @@ from ArduinoData import ArduinoData
 from firebaseConfig import firebaseConfig
 import time
 from threading import Thread
-# import clientThread
+import clientThread
 import TCPClient
 import timerStatus
 import math
@@ -32,7 +32,7 @@ for x in devices.each():
   #  'name': 'Lamp', 'timer': False, 'timerEndDate': 0}
   #(self, MACaddr, deviceID, shutdown,consumptionIndex, timer, timerTime):
 for i in range(len(arr)):
-  arduinos.append(ArduinoData(arr[i]['mac'],arr[i]['id'], arr[i]['isTurnedOn'],arr[i]['consumptionIndex'], arr[i]['timer'], arr[i]['timerEndDate']))
+  arduinos.append(ArduinoData(arr[i]['macAddr'],arr[i]['id'], arr[i]['isTurnedOn'],arr[i]['consumptionIndex'], arr[i]['timer'], arr[i]['timerEndDate']))
 print(arduinos[0].getMAC())
 print(arduinos[0].getDeviceID())
 print(arduinos[0].getShutdown())
@@ -41,12 +41,22 @@ print(arduinos[0].getTimer())
 print(arduinos[0].getTimerTime())
 # macaddress = userData.val()
 
+# CREATE FUNC TO CALL DURING LOOP / EVERY MINUTE
 macArr = []
 for x in macaddressData.each():
   macArr.append([x.key(),x.val()])
+print(macArr[0])
+temp = []
+for i in range(len(macArr)):
+  temp = macArr.pop()
+  for j in range(len(arduinos)):
+    if temp[0] == arduinos[j].getMAC():
+      arduinos[j].setIP(temp[1])
+for i in range(len(arduinos)):
+  print(arduinos[i].getIP())
 
-Hostname = macArr[0][1]
-print(Hostname)
+# Hostname = macArr[0][1]
+# print(Hostname)
 timer = 0
 timerStart = 0
 timerFinished = True
@@ -125,18 +135,29 @@ while(True):
     flag = str(shutdownFlag)
     sendData = sendData + flag
     sendData = sendData + "?.\n"
-    print("... Sending data to arduino: ", Hostname,":",Port, " ...")
-    TCPClient.tcpClient(Hostname, Port, sendData, arduinos)
+
+    # arduinos[0].setIP("NoIP") # REMOVE !!!!
+
+    for i in range(len(arduinos)):
+      if(arduinos[i].getIP() != "NoIP"):
+        try:
+          TCPClient.tcpClient(arduinos[i].getIP(), Port+i, sendData, arduinos[i])
+          time.sleep(0.02)
+        except:
+          print("connection failed with IP: ", arduinos[i].getIP)
+          arduinos[i].setIP("NoIP")
+          # arduinos[i].setIsActive(False)
+        # print("... Sending data to arduino: ", arduinos[i].getIP(),":",Port, " ...")
+        # clientThread.createThread(arduinos[i].getIP(),Port+i, sendData, arduinos[i])
     # db.child("/Energyconsumption/").child(0).set([0,0])
-    length = len(db.child("/Energyconsumption/").get().val())
-    print("length:", length)
+    # length = len(db.child("/Energyconsumption/").get().val())
+    # print("length:", length)
     # print(arduinos[0].getPowerDataLatest())
     
     # UPLOAD POWERDATA change child(1) to child(length)
     db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/consumption/value/0/values").child(consumptionIndex).set(arduinos[0].getPowerDataLatest())
     # consumptionIndex = consumptionIndex +1
     db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/0/").child('consumptionIndex').set(consumptionIndex+1)
-  # clientThread.createThread(Hostname, sendData)
   
 
 

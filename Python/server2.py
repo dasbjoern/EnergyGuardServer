@@ -1,7 +1,7 @@
 import socket
 import sys
 
-port = 8890
+port = 8889
 ip = "127.0.0.1"
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -26,7 +26,7 @@ while True:
         data = clientSocket.recv(1024)
         print(data.decode())
         
-        sendData="ARDUINO?ab:62:60:81:14:e3?0?"+str(num)+"?.\n"
+        sendData="ARDUINO?dc:62:60:81:14:a2?0?"+str(num)+"?.\n"
         num = (num*2 +23 )%100
         clientSocket.sendall(sendData.encode("ascii"))
 

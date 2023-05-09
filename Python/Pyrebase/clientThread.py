@@ -7,7 +7,7 @@ from ArduinoData import ArduinoData
 import sendUpdate
 # hostname = "192.168.137.94"
 # port = 8888
-arduinos = []
+# arduinos = []
 lock = threading.Lock()
 
 # class clientThread:
@@ -18,13 +18,13 @@ lock = threading.Lock()
 #         self.hostname = hostname
 #         self.port = port
 
-def createThread(hostname,data):
+def createThread(hostname,port,data, arduino):
 
     try:
-        aThread = Thread(target = tcpClient, args=(hostname,8888, data)).start()
+        aThread = Thread(target = tcpClient, args=(hostname,port, data, arduino)).start()
         try:
+            Thread.sleep(0.05)
             aThread.join()
-            # Thread.sleep(10)
         except:
             print("Could not join")
     except:
@@ -32,22 +32,24 @@ def createThread(hostname,data):
    
         
 
-def tcpClient(Host, Port, senddata):
-    time.sleep(1)
+def tcpClient(Host, Port, senddata, arduino):
     try:
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((Host, Port))
         # protocol: OK?SHUTDOWNFLAG?TIMERSEC?.
+        
         clientSocket.sendall(senddata.encode("ascii"))
+
         data = clientSocket.recv(1024)
+        
         recvData = data.decode()
         dataSplit = recvData.split("?")
-        for x in dataSplit:
-            print(x)
+        # for x in dataSplit:
+        #     print(x)
 
         lock.acquire()
         # print(dataSplit[0])
-        if(sendUpdate.interpretData(arduinos, dataSplit)):
+        if(sendUpdate.interpretData(arduino, dataSplit)):
             print("PROTOCOL: OK ")
         else:
             print("PROTOCOL: MISSMATCH ")

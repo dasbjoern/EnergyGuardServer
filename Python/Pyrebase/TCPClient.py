@@ -11,7 +11,8 @@ import sendUpdate
 
 # code start
 
-def tcpClient(host, port, sendData, arduinos):
+def tcpClient(host, port, sendData, arduino):
+    print("... Sending data to arduino: ", host,":",port, " ...")
     # "192.168.137.21"
     # Host = "192.168.137.210"
     # Port = 8888
@@ -35,6 +36,8 @@ def tcpClient(host, port, sendData, arduinos):
     #time.sleep(1)
     try:
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # clientSocket.setblocking(False)
+        clientSocket.settimeout(0.1)
         clientSocket.connect((host, port))
         # protocol: OK?SHUTDOWNFLAG?TIMERSEC?DATA.
             # sendData = "OK?"
@@ -43,7 +46,6 @@ def tcpClient(host, port, sendData, arduinos):
             # sendData = sendData + "?.\n"
 
             # sendData.concat("?.\n")
-
         print(sendData)
 
         clientSocket.sendall(sendData.encode("ascii"))
@@ -55,7 +57,7 @@ def tcpClient(host, port, sendData, arduinos):
         # for x in dataSplit:
             # print(x)
         # print(dataSplit[0])
-        if(sendUpdate.interpretData(arduinos, dataSplit)):
+        if(sendUpdate.interpretData(arduino, dataSplit)):
             print("PROTOCOL: OK ")
         else:
             print("PROTOCOL: MISSMATCH ")
@@ -66,7 +68,9 @@ def tcpClient(host, port, sendData, arduinos):
     except ConnectionRefusedError:
         print("Connection could not be made. ")
     except:
-        print("Unexpected error. ")
+        print("Connection Unexpected error, wrong IP ")
+        arduino.setIP("NoIP")
+        #arduino.setIsActive(False)
 
 
     

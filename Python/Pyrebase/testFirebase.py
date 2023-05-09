@@ -20,15 +20,24 @@ shutdownFlag = 0
 if(True):
   print("...// Gathering data from Firebase. //...")
   try:
-    devices = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/").get()
-    arr = []
-    for x in devices.each():
-      arr.append(x.val())
-      print(x.val())
-    print(len(arr))
-  # {'consumptionIndex': 103, 'id': 1, 'isActive': True, 'isTurnedOn': False,
-  #  'name': 'Lamp', 'timer': False, 'timerEndDate': 0}
-    print(arr[0]['isActive'])
+    
+    # devices = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/").get()
+    # macaddr = "ec:62:60:81:14:a8"
+
+    db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child("ab:62:60:81:14:e3").set("127.0.0.1")
+    db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child("dc:62:60:81:14:a2").set("127.0.0.1")
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/1/").child("macAddr").set("ab:62:60:81:14:e3")
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/2/").child("macAddr").set("dc:62:60:81:14:a2")
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/3/").child("macAddr").set("e4:62:60:81:14:b4")
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/4/").child("macAddr").set("ae:62:60:81:14:8a")
+  #   arr = []
+  #   for x in devices.each():
+  #     arr.append(x.val())
+  #     print(x.val())
+  #   print(len(arr))
+  # # {'consumptionIndex': 103, 'id': 1, 'isActive': True, 'isTurnedOn': False,
+  # #  'name': 'Lamp', 'timer': False, 'timerEndDate': 0}
+  #   print(arr[0]['isActive'])
     # print(macip[str(x)])
     # macip[0]
     # print(userData.val()[0])

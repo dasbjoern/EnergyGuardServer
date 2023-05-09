@@ -13,7 +13,7 @@ class ArduinoData:
     isActive = False
     powerDataAvg = 0
     consumptionIndex = 0
-    ip = "LOCALHOST"
+    ip = "NoIP"
 
     def __init__(self, MACaddr, deviceID, shutdown,consumptionIndex, timer, timerTime):
         self.MACAddress = MACaddr
@@ -77,9 +77,9 @@ class ArduinoData:
         self.timerTime = time
     def setIP(self, ip):
         self.ip = ip
-    def getAddr(self):
+    def getIP(self):
         return self.ip
-    def getAddrFull(self):
+    def getAddr(self):
         return (self.ip,8888)
 
 # arduino = ArduinoData(1,1,1,1)
