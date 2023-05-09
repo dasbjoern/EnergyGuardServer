@@ -5,21 +5,35 @@ import math
 class ArduinoData:
 
     MACAddress = "NoMAC"
+    deviceID = 0
     shutdown = False
     powerData = []
-    timer = 0
+    timer = False
+    timerTime = 0
+    isActive = False
     powerDataAvg = 0
-    (ip, port) = ("LOCALHOST",8888)
+    consumptionIndex = 0
+    ip = "LOCALHOST"
 
-    def __init__(self, MACaddr, shutdown, powerData):
+    def __init__(self, MACaddr, deviceID, shutdown,consumptionIndex, timer, timerTime):
         self.MACAddress = MACaddr
+        self.deviceID = deviceID
         self.shutdown = shutdown
-        self.powerData.append([powerData,math.trunc(time.time()*1000)])
+        self.consumptionIndex = consumptionIndex
+        self.timer = timer
+        self.timerTime = timerTime
+        # self.isActive = isActive
+        # self.powerData.append([powerData,math.trunc(time.time()*1000)])
 
         # self.setEnergyData(powerData)
     def getMAC(self):
         return self.MACAddress  
-    
+    def setMAC(self, mac):
+        self.MACAddress = mac
+    def getDeviceID(self):
+        return self.deviceID
+    def setDeviceID(self, id):
+        self.deviceID = id
     def setPowerData(self, powerData):
         if(len(self.powerData) == 10):
             # self.setPowerDataAvg()
@@ -49,15 +63,24 @@ class ArduinoData:
         self.shutdown = shutdown
     def getShutdown(self):
         return self.shutdown
+    def getConsumptionIndex(self):
+        return self.consumptionIndex
+    def setConsumptionIndex(self, index):
+        self.consumptionIndex = index
     def setTimer(self, time):
         self.timer= time
     def getTimer(self):
         return self.timer
-    def setAddr(self, ip, port=8888):
+    def getTimerTime(self):
+        return self.timerTime
+    def setTimerTime(self, time):
+        self.timerTime = time
+    def setIP(self, ip):
         self.ip = ip
-        self.ip = port
     def getAddr(self):
-        return (self.ip, self.port)
+        return self.ip
+    def getAddrFull(self):
+        return (self.ip,8888)
 
 # arduino = ArduinoData(1,1,1,1)
 # print(arduino.energyData[0])

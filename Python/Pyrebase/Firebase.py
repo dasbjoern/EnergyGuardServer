@@ -1,4 +1,5 @@
 import pyrebase
+from ArduinoData import ArduinoData
 from firebaseConfig import firebaseConfig
 import time
 from threading import Thread
@@ -14,8 +15,30 @@ Port = 8888
 arduinos = []
 
 firebase = pyrebase.initialize_app(firebaseConfig)
+
+# INITIALIZE
 db = firebase.database() 
+
+devices = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/").get()
 macaddressData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address").get()
+
+arr = []
+for x in devices.each():
+  arr.append(x.val())
+  print(x.val())
+
+
+  # {'consumptionIndex': 103, 'id': 1, 'isActive': True, 'isTurnedOn': False,
+  #  'name': 'Lamp', 'timer': False, 'timerEndDate': 0}
+  #(self, MACaddr, deviceID, shutdown,consumptionIndex, timer, timerTime):
+for i in range(len(arr)):
+  arduinos.append(ArduinoData(arr[i]['mac'],arr[i]['id'], arr[i]['isTurnedOn'],arr[i]['consumptionIndex'], arr[i]['timer'], arr[i]['timerEndDate']))
+print(arduinos[0].getMAC())
+print(arduinos[0].getDeviceID())
+print(arduinos[0].getShutdown())
+print(arduinos[0].getConsumptionIndex())
+print(arduinos[0].getTimer())
+print(arduinos[0].getTimerTime())
 # macaddress = userData.val()
 
 macArr = []

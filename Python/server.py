@@ -16,6 +16,7 @@ if len(sys.argv) > 1:
 
 serverSocket.bind((ip,port))
 print("Server started on port %s", port)
+num = 100
 while True:
     try:
         serverSocket.listen()
@@ -24,9 +25,10 @@ while True:
 
         data = clientSocket.recv(1024)
         print(data.decode())
-    
-
-        clientSocket.sendall(b"ARDUINO?MAC?0?412?.")
+        
+        sendData="ARDUINO?ec:62:60:81:14:a8?0?"+str(num)+"?.\n"
+        num = (num*2 +23 )%100
+        clientSocket.sendall(sendData.encode("ascii"))
 
         clientSocket.close()
     except:

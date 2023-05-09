@@ -20,15 +20,15 @@ shutdownFlag = 0
 if(True):
   print("...// Gathering data from Firebase. //...")
   try:
-    userData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address").get()
-    macip = userData.val()
-    print(len(macip))
+    devices = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/").get()
     arr = []
-    for x in userData.each():
-      arr.append([x.key(),x.val()])
-      print(x.key())
+    for x in devices.each():
+      arr.append(x.val())
       print(x.val())
-    print(arr[0])
+    print(len(arr))
+  # {'consumptionIndex': 103, 'id': 1, 'isActive': True, 'isTurnedOn': False,
+  #  'name': 'Lamp', 'timer': False, 'timerEndDate': 0}
+    print(arr[0]['isActive'])
     # print(macip[str(x)])
     # macip[0]
     # print(userData.val()[0])
