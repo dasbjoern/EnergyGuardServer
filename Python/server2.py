@@ -1,8 +1,13 @@
 import socket
 import sys
 
-port = 8889
+port = 8888
 ip = "127.0.0.1"
+
+hostname = socket.gethostname()
+IPAddr = socket.gethostbyname(hostname)
+print(IPAddr)
+
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 if len(sys.argv) > 1:

@@ -34,6 +34,10 @@ class ArduinoData:
         return self.deviceID
     def setDeviceID(self, id):
         self.deviceID = id
+    def getIsActive(self):
+        return self.isActive
+    def setIsActive(self, active):
+        self.isActive = active
     def setPowerData(self, powerData):
         if(len(self.powerData) == 10):
             # self.setPowerDataAvg()
@@ -58,6 +62,7 @@ class ArduinoData:
     def getPowerDataLatest(self):
         length = len(self.powerData)
         # print(length)
+
         return self.powerData[length-1]
     def setShutdown(self, shutdown):
         self.shutdown = shutdown

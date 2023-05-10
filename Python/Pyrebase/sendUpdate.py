@@ -1,28 +1,28 @@
 from ArduinoData import ArduinoData
-def updateArduino(ard, MACaddr, shutdownFlag, powerData):
+def updateArduino(arduinos, index, MACaddr, shutdownFlag, powerData):
     
     try:
-                    # int(timer)
-        ard.setPowerData(float(powerData))
-        print(ard.getPowerDataLatest())
-        print(bool(shutdownFlag))
-        print("AVG: ",ard.getPowerDataAvg())
-        if(ard.getShutdown() != bool(shutdownFlag)):
-            ard.setShutdown(bool(shutdownFlag))
+        # if(arduinos[index].getMAC() == MACaddr):      
+        arduinos[index].setPowerData(float(powerData))  
+            # print("AVG: ",arduinos[index].getPowerDataAvg())
+        if(arduinos[index].getIsActive() == False):
+            arduinos[index].setIsActive(True)
+        if(arduinos[index].getShutdown() != bool(shutdownFlag)):
+            arduinos[index].setShutdown(bool(shutdownFlag))
     except ValueError:
         print("Could not parse number.")
 
-    else:
-        try:
-            print("else")# arduinos.append(ArduinoData(MACaddr, bool(shutdownFlag), float(powerData)))
-        except ValueError:
-            print("Could not parse number.")
+    #  else:
+    #     try:
+    #         print("else")# arduinos.append(ArduinoData(MACaddr, bool(shutdownFlag), float(powerData)))
+    #     except ValueError:
+    #         print("Could not parse number.")
 
-def interpretData(arduino, dataSplit):
+def interpretData(arduinos, index, dataSplit):
     isProtocol = False
     if len(dataSplit) == 5:
         if(dataSplit[0] == "ARDUINO"):
-            updateArduino(arduino, dataSplit[1], dataSplit[2], dataSplit[3])
+            updateArduino(arduinos,index, dataSplit[1], dataSplit[2], dataSplit[3])
             isProtocol = True
 
     return isProtocol
