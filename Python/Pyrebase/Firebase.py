@@ -28,6 +28,7 @@ def findIP(arduinos, db):
   for i in range(len(arduinos)):
     print(arduinos[i].getIP())
 
+
 # Hostname = "192.168.137.94"
 # Hostname = "127.0.0.1"
 Port = 8888
@@ -72,6 +73,8 @@ timeLoop = time.time()
 consumptionIndex = 0
 deviceID = 0
 timeMinute = time.time()
+timePowerData = time.time()
+sendPowerDataInterval = 10
 #todo read in all devices FIREBASE
 statusPathDb = "users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/"
 consumptionPathDb = "users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/consumption/"
@@ -156,10 +159,11 @@ while(True):
   for i in range(len(arduinos)):
     if(arduinos[i].getIsActive() == True):
       # print(arduinos[i].getConsumptionIndex())
-      db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].getPowerDataLatest())
-      db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
-  
-
+      db.child(statusPathDb + str(i) +"/").child('isActive').set(True)
+      if(round(time.time()-timePowerData >= sendPowerDataInterval)):
+        db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].PowerCalc(sendPowerDataInterval))
+        db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
+        timePowerData = time.time()
 
 
 # print(userData.key())

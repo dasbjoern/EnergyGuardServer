@@ -11,7 +11,7 @@ class ArduinoData:
     timer = False
     timerTime = 0
     isActive = False
-    powerDataAvg = 0
+    powerDataAvg = []
     consumptionIndex = 0
     ip = "NoIP"
 
@@ -26,6 +26,23 @@ class ArduinoData:
         # self.powerData.append([powerData,math.trunc(time.time()*1000)])
 
         # self.setEnergyData(powerData)
+    def PowerCalc(self, sec):
+        i = 0
+        PowerkWh = 0
+
+        while i < sec:
+            
+            powerData = self.getPowerDataPopFirst()
+            if(powerData[0] < 0):
+                powerData[0]=0
+            PowerkWh += powerData[0]
+        # arduino.popPowerData()
+            i += 1
+        # print(PowerkWh + "Wh")
+
+        self.setPowerDataAvg(PowerkWh)
+        return self.getPowerDataAvg()
+    
     def getMAC(self):
         return self.MACAddress  
     def setMAC(self, mac):
@@ -39,31 +56,24 @@ class ArduinoData:
     def setIsActive(self, active):
         self.isActive = active
     def setPowerData(self, powerData):
-        if(len(self.powerData) == 10):
-            # self.setPowerDataAvg()
-            self.powerData.clear()
-            self.powerData.append([powerData,math.trunc(time.time()*1000)])
-        else:
-            self.powerData.append([powerData,math.trunc(time.time()*1000)])
+        self.powerData.append([powerData,math.trunc(time.time()*1000)])
         # currentTime = datetime.datetime.now()
         # timeStamp = currentTime.timestamp()
         # dateTime = datetime.fromtimestamp(timeStamp)
         # self.myMap.put(dateTime, powerData)
         
-    def setPowerDataAvg(self):
-        sum = 0
-        for x in self.powerData:
-            sum = sum + x
-        self.powerDataAvg = sum/10
+    def setPowerDataAvg(self, powerData):
+        self.powerDataAvg.append([powerData,math.trunc(time.time()*1000)])
     def getPowerDataAvg(self):
-        return self.powerDataAvg
+        return self.powerDataAvg.pop(0)
     def getPowerData(self):
         return self.powerData
     def getPowerDataLatest(self):
         length = len(self.powerData)
         # print(length)
-
         return self.powerData[length-1]
+    def getPowerDataPopFirst(self):
+        return self.powerData.pop(0)
     def setShutdown(self, shutdown):
         self.shutdown = shutdown
     def getShutdown(self):
