@@ -8,6 +8,23 @@ import TCPClient
 import timerStatus
 import math
 
+def findIP(arduinos):
+  macArr = []
+  for x in macaddressData.each():
+    macArr.append([x.key(),x.val()])
+  print(macArr[0])
+  temp = []
+  for i in range(len(macArr)):
+    temp = macArr.pop()
+    for j in range(len(arduinos)):
+      if temp[0] == arduinos[j].getMAC():
+        arduinos[j].setIP(temp[1])
+        if(temp[1]=="NoIP"):
+          arduinos[j].setIsActive(False)
+        else:  
+          arduinos[j].setIsActive(True)
+  for i in range(len(arduinos)):
+    print(arduinos[i].getIP())
 
 # Hostname = "192.168.137.94"
 # Hostname = "127.0.0.1"
@@ -42,23 +59,7 @@ for i in range(len(arr)):
 # macaddress = userData.val()
 
 # CREATE FUNC TO CALL DURING LOOP / EVERY MINUTE
-macArr = []
-for x in macaddressData.each():
-  macArr.append([x.key(),x.val()])
-print(macArr[0])
-temp = []
-for i in range(len(macArr)):
-  temp = macArr.pop()
-  for j in range(len(arduinos)):
-    if temp[0] == arduinos[j].getMAC():
-      arduinos[j].setIP(temp[1])
-      if(temp[1]=="NoIP"):
-        arduinos[j].setIsActive(False)
-      else:  
-        arduinos[j].setIsActive(True)
-for i in range(len(arduinos)):
-  print(arduinos[i].getIP())
-
+findIP(arduinos)
 # Hostname = macArr[0][1]
 # print(Hostname)
 timer = 0
@@ -138,6 +139,9 @@ while(True):
   
 
     # arduinos[0].setIP("NoIP") # REMOVE !!!!
+  if(timeMinute - time.time() > 60):
+    findIP(arduinos)
+    timeMinute=time.time()
 
   for i in range(len(arduinos)):
     if(arduinos[i].getIP() != "NoIP"):
@@ -147,12 +151,16 @@ while(True):
       except:
         print("Firebase.py: connection failed with IP: ", arduinos[i].getIP())
           # arduinos[i].setIP("NoIP")
+  for ard in arduinos:
+    if((ard.getIsActive() == False)):
+      db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child(ard.getMAC()).set("NoIP")
   for i in range(len(arduinos)):
     if(arduinos[i].getIsActive() == True):
       print(arduinos[i].getConsumptionIndex())
       db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].getPowerData())
       db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
   
+
 
 
 # print(userData.key())
