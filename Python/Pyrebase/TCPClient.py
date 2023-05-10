@@ -62,11 +62,15 @@ def tcpClient(host, port, arduinos, index):
             print("PROTOCOL: MISSMATCH ")
         clientSocket.close()
     except TimeoutError:
+        arduinos[index].setIP("NoIP")
+        arduinos[index].setIsActive(False)
         print("Socket timeout. ")
     except ConnectionRefusedError:
+        arduinos[index].setIP("NoIP")
+        arduinos[index].setIsActive(False)
         print("Connection could not be made. ")
     except:
-        print("TCPClient.py: Connection Unexpected error, wrong IP: ",arduinos[index].getIP())
+        print("TCPClient.py: Connection Unexpected error, wrong IP: ", arduinos[index].getIP())
         arduinos[index].setIP("NoIP")
         arduinos[index].setIsActive(False)
         # arduino.setIsActive(False)

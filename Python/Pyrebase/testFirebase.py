@@ -28,11 +28,12 @@ if(True):
     # for x in statusData:
     #   print(x['macAddr'])
     i = 0
-    statusPathDb = "/users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/" + str(i) +"/consumptionIndex/"
-
-    print((statusPathDb + str(i) + "/consumptionIndex/"))
-    print(db.child(statusPathDb).get().val())
-    # arr.append(x.val())
+    statusPathDb = "/users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/"
+    timer = db.child(statusPathDb + str(i) +"/" + "timerEndDate").get().val()
+    timer = timer/1000
+    print("TIME", timer)
+    print("TIME",time.time())
+    print(round(timer - time.time()))
     # print(x.key(),":", x.val())
     # print(statusData.val()[0])
     # timer = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/0/timerEndDate").get().val()

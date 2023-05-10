@@ -15,13 +15,13 @@ class ArduinoData:
     consumptionIndex = 0
     ip = "NoIP"
 
-    def __init__(self, MACaddr, deviceID, shutdown,consumptionIndex, timer, timerTime):
+    def __init__(self, MACaddr, deviceID, shutdown,consumptionIndex):
         self.MACAddress = MACaddr
         self.deviceID = deviceID
         self.shutdown = shutdown
         self.consumptionIndex = consumptionIndex
-        self.timer = timer
-        self.timerTime = timerTime
+        # self.timer = timer
+        # self.timerTime = timerTime
         # self.isActive = isActive
         # self.powerData.append([powerData,math.trunc(time.time()*1000)])
 

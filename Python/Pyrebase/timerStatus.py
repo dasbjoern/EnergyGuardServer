@@ -3,8 +3,8 @@ import time
 
 def timerStatus(timer):
     timerReached = False
-    print("TIMER: ", round(time.time() - timer))
-    if(0 <= round(time.time() - timer)):
+    print("TIMER: ", round(timer - time.time()))
+    if(round(timer - time.time()) <= 0):
         timerReached = True
     return timerReached
 
