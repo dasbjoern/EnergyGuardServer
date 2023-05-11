@@ -7,10 +7,9 @@ import clientThread
 import TCPClient
 import timerStatus
 import math
-
-def findIP(arduinos, db):
+def findIP(arduinos,userid, db):
   # db = firebase.database() 
-  macaddressData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address").get()
+  macaddressData = db.child("users/"+ userid +"/mac_address").get()
   macArr = []
   for x in macaddressData.each():
     macArr.append([x.key(),x.val()])
@@ -21,26 +20,37 @@ def findIP(arduinos, db):
     for j in range(len(arduinos)):
       if temp[0] == arduinos[j].getMAC():
         arduinos[j].setIP(temp[1])
+        temp[0] = "found"
         if(temp[1]=="NoIP"):
           arduinos[j].setIsActive(False)
         else:  
           arduinos[j].setIsActive(True)
+    if(temp[0] != "found"):
+      print("unkown device")
   for i in range(len(arduinos)):
     print(arduinos[i].getIP())
 
 
 # Hostname = "192.168.137.94"
 # Hostname = "127.0.0.1"
+energyHubID = "energyguard"
 Port = 8888
 arduinos = []
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 
 # INITIALIZE
-db = firebase.database() 
+db = firebase.database()
+userid = db.child("hubID/"+ energyHubID + "/").get().val()
 
-devices = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/").get()
-macaddressData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address").get()
+while(userid == None):
+  userid = db.child("hubID/"+ energyHubID + "/").get().val()
+
+db = firebase.database()
+ 
+
+devices = db.child("users/"+ userid +"/status/").get()
+macaddressData = db.child("users/"+ userid +"/mac_address").get()
 
 arr = []
 for x in devices.each():
@@ -62,7 +72,7 @@ for i in range(len(arr)):
 # macaddress = userData.val()
 
 # CREATE FUNC TO CALL DURING LOOP / EVERY MINUTE
-findIP(arduinos, db)
+findIP(arduinos,userid, db)
 # Hostname = macArr[0][1]
 # print(Hostname)
 timer = 0
@@ -76,8 +86,8 @@ timeRescan = time.time()
 timePowerData = time.time()
 sendPowerDataInterval = 10
 #todo read in all devices FIREBASE
-statusPathDb = "users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/"
-consumptionPathDb = "users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/consumption/"
+statusPathDb = "users/"+ userid +"/status/"
+consumptionPathDb = "users/"+ userid +"/consumption/"
 
 while(True):
   # time.sleep(1)
@@ -90,7 +100,7 @@ while(True):
     # print("...// Gathering data from Firebase. //...")
     try:
       # userData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/value/0/isTurnedOn/value").get()
-      statusData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/").get().val()
+      statusData = db.child(statusPathDb).get().val()
       for status in statusData:
         # status = statusData.pop()
         for ard in arduinos:
@@ -100,17 +110,7 @@ while(True):
             ard.setConsumptionIndex(status['consumptionIndex'])
             ard.setLimit(status['powerLimit'])
 
-            # print("consindex:",ard.getConsumptionIndex(), ard.getMAC())
-            # ard.setTimer(status['timer'])
-            # print(ard.getTimer())
 
-
-      # for ard in arduinos:
-      #   print(ard.getMAC(), ard.getShutdown())
-      #   print(ard.getConsumptionIndex())
-      # # time.sleep(10)
-      # statusData = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/0/").get().val()
-      # print(consumptionIndex)
 
       # isActive = statusData['isActive']
       # consumptionIndex = statusData['consumptionIndex']
@@ -136,7 +136,7 @@ while(True):
                 if(timerStatus.timerStatus(arduinos[i].getTimerTime())):
                   # print("timer 4", timerStatus.timerStatus(arduinos[i].getTimerTime()))
                   db.child(statusPathDb + str(i) +"/" + "timer").set(False)
-                  db.child(statusPathDb + str(i) +"/" + "isTurnedOn").set(False)
+                  db.child(statusPathDb + str(i) +"/" + "isTurnedOn").set(not arduinos[i].getShutdown())
                   arduinos[i].setTimer(False)
     except:
       print("pyrebase error timer.")
@@ -145,7 +145,7 @@ while(True):
 
     # Check for renewed ips
     if(time.time() - timeRescan >= 60):
-      findIP(arduinos, db)
+      findIP(arduinos, userid, db)
       timeRescan=time.time()
 
     for i in range(len(arduinos)):
