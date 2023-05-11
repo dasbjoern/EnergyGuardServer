@@ -161,8 +161,9 @@ while(True):
       # print(arduinos[i].getConsumptionIndex())
       db.child(statusPathDb + str(i) +"/").child('isActive').set(True)
       if(round(time.time()-timePowerData >= sendPowerDataInterval)):
-        db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].PowerCalc(sendPowerDataInterval))
-        db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
+        if(len(arduinos.getPowerData()) >= 10):
+          db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].PowerCalc(sendPowerDataInterval))
+          db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
         timePowerData = time.time()
     else:
       db.child(statusPathDb + str(i) +"/").child('isActive').set(False)
