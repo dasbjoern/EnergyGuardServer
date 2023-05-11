@@ -79,9 +79,9 @@ sendPowerDataInterval = 10
 statusPathDb = "users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/"
 consumptionPathDb = "users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/consumption/"
 while(True):
-  db = firebase.database()  
   # time.sleep(1)
   if(time.time() - timeLoop >= 1):
+    db = firebase.database()  
     # print(time.time())
     # print(round(time.time() - timeLoop))
     timeLoop = time.time()
@@ -149,7 +149,7 @@ while(True):
       if(arduinos[i].getIP() != "NoIP"):
         try:
           TCPClient.tcpClient(arduinos[i].getIP(), Port, arduinos, i)
-          time.sleep(0.05)
+          # time.sleep(0.05)
         except:
           print("Firebase.py: connection failed with IP: ", arduinos[i].getIP())
           # arduinos[i].setIP("NoIP")
