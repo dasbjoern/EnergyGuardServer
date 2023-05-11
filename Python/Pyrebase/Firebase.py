@@ -141,32 +141,33 @@ while(True):
   
 
     # Check for renewed ips
-  if(time.time() - timeRescan >= 60):
-    findIP(arduinos, db)
-    timeRescan=time.time()
+    if(time.time() - timeRescan >= 60):
+      findIP(arduinos, db)
+      timeRescan=time.time()
 
-  for i in range(len(arduinos)):
-    if(arduinos[i].getIP() != "NoIP"):
-      try:
-        TCPClient.tcpClient(arduinos[i].getIP(), Port, arduinos, i)
-        time.sleep(0.05)
-      except:
-        print("Firebase.py: connection failed with IP: ", arduinos[i].getIP())
+    for i in range(len(arduinos)):
+      if(arduinos[i].getIP() != "NoIP"):
+        try:
+          TCPClient.tcpClient(arduinos[i].getIP(), Port, arduinos, i)
+          time.sleep(0.05)
+        except:
+          print("Firebase.py: connection failed with IP: ", arduinos[i].getIP())
           # arduinos[i].setIP("NoIP")
   # for ard in arduinos:
     # if((ard.getIsActive() == False)):
       # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child(ard.getMAC()).set("NoIP")
-  for i in range(len(arduinos)):
-    if(arduinos[i].getIsActive() == True):
+    for i in range(len(arduinos)):
+      if(arduinos[i].getIsActive() == True):
       # print(arduinos[i].getConsumptionIndex())
-      db.child(statusPathDb + str(i) +"/").child('isActive').set(True)
-      if(round(time.time()-timePowerData >= sendPowerDataInterval)):
-        if(len(arduinos[i].getPowerData()) >= 10):
-          db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].PowerCalc(sendPowerDataInterval))
-          db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
-        timePowerData = time.time()
-    else:
-      db.child(statusPathDb + str(i) +"/").child('isActive').set(False)
+        # db = firebase.database()
+        db.child(statusPathDb + str(i) +"/").child('isActive').set(True)
+        if(round(time.time()-timePowerData >= sendPowerDataInterval)):
+          if(len(arduinos[i].getPowerData()) >= 10):
+            db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].PowerCalc(sendPowerDataInterval))
+            db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
+            timePowerData = time.time()
+      else:
+        db.child(statusPathDb + str(i) +"/").child('isActive').set(False)
 
 # print(userData.key())
 
