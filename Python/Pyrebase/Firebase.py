@@ -140,7 +140,7 @@ while(True):
     
   
 
-    # arduinos[0].setIP("NoIP") # REMOVE !!!!
+    # Check for renewed ips
   if(time.time() - timeMinute >= 60):
     findIP(arduinos, db)
     timeMinute=time.time()
@@ -153,9 +153,9 @@ while(True):
       except:
         print("Firebase.py: connection failed with IP: ", arduinos[i].getIP())
           # arduinos[i].setIP("NoIP")
-  for ard in arduinos:
-    if((ard.getIsActive() == False)):
-      db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child(ard.getMAC()).set("NoIP")
+  # for ard in arduinos:
+    # if((ard.getIsActive() == False)):
+      # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child(ard.getMAC()).set("NoIP")
   for i in range(len(arduinos)):
     if(arduinos[i].getIsActive() == True):
       # print(arduinos[i].getConsumptionIndex())
