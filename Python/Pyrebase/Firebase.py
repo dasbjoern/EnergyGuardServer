@@ -164,7 +164,8 @@ while(True):
         db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].PowerCalc(sendPowerDataInterval))
         db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
         timePowerData = time.time()
-
+    else:
+      db.child(statusPathDb + str(i) +"/").child('isActive').set(False)
 
 # print(userData.key())
 
