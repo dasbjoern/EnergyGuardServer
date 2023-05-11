@@ -72,7 +72,7 @@ timerFinished = True
 timeLoop = time.time()
 consumptionIndex = 0
 deviceID = 0
-timeMinute = time.time()
+timeRescan = time.time()
 timePowerData = time.time()
 sendPowerDataInterval = 10
 #todo read in all devices FIREBASE
@@ -141,9 +141,9 @@ while(True):
   
 
     # Check for renewed ips
-  if(time.time() - timeMinute >= 60):
+  if(time.time() - timeRescan >= 60):
     findIP(arduinos, db)
-    timeMinute=time.time()
+    timeRescan=time.time()
 
   for i in range(len(arduinos)):
     if(arduinos[i].getIP() != "NoIP"):

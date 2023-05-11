@@ -36,12 +36,12 @@ if(True):
     print("TIME", timer)
     print("TIME",time.time())
     istrue = True
-    while(istrue):
-      if(round(time.time()-timeSet) >= 1):
-        print(round(time.time()-timeSet))
-      if(round(time.time()-timeSet >= 10)):
-        print(round(time.time()-timeSet >= 10))
-        istrue = False
+    # while(istrue):
+    #   if(round(time.time()-timeSet) >= 1):
+    #     print(round(time.time()-timeSet))
+    #   if(round(time.time()-timeSet >= 10)):
+    #     print(round(time.time()-timeSet))
+    #     istrue = False
     # print(x.key(),":", x.val())
     # print(statusData.val()[0])
     # timer = db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/0/timerEndDate").get().val()
@@ -51,11 +51,13 @@ if(True):
     # print(statusData)
     # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child("ab:62:60:81:14:e3").set("127.0.0.1")
     # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child("dc:62:60:81:14:a2").set("127.0.0.1")
-    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/0/").child("macAddr").set("ec:62:60:81:14:a8")
-    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/1/").child("macAddr").set("ab:62:60:81:14:e3")
-    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/2/").child("macAddr").set("dc:62:60:81:14:a2")
-    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/3/").child("macAddr").set("e4:62:60:81:14:b4")
-    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/4/").child("macAddr").set("ae:62:60:81:14:8a")
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/0/").child("powerLimit").set(100)
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/1/").child("powerLimit").set(200)
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/2/").child("powerLimit").set(300)
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/3/").child("powerLimit").set(300)
+    # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/4/").child("powerLimit").set(0)
+    print(db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/0/").child("powerLimit").get().val())
+
   #   arr = []
   #   for x in devices.each():
   #     arr.append(x.val())
