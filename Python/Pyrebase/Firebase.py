@@ -78,6 +78,7 @@ sendPowerDataInterval = 10
 #todo read in all devices FIREBASE
 statusPathDb = "users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/status/"
 consumptionPathDb = "users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/consumption/"
+
 while(True):
   # time.sleep(1)
   if(time.time() - timeLoop >= 1):
@@ -97,6 +98,8 @@ while(True):
           if(status['macAddr'] == ard.getMAC()):
             ard.setShutdown(status['isTurnedOn'])
             ard.setConsumptionIndex(status['consumptionIndex'])
+            ard.setLimit(status['powerLimit'])
+
             # print("consindex:",ard.getConsumptionIndex(), ard.getMAC())
             # ard.setTimer(status['timer'])
             # print(ard.getTimer())
@@ -152,10 +155,17 @@ while(True):
           # time.sleep(0.05)
         except:
           print("Firebase.py: connection failed with IP: ", arduinos[i].getIP())
-          # arduinos[i].setIP("NoIP")
-  # for ard in arduinos:
-    # if((ard.getIsActive() == False)):
-      # db.child("users/rh9hxkJsnhRVqWYZfqUi6mEWAAx1/mac_address/").child(ard.getMAC()).set("NoIP")
+    
+    try:
+      for i in range(len(arduinos)):
+        if(arduinos[i].getIsActive() == True):
+          if(arduinos[i].getShutdown() == True):
+            if(arduinos[i].powerLimit() == False):
+              db.child(statusPathDb + str(i) +"/" + "powerLimit").set(0)
+              db.child(statusPathDb + str(i) +"/" + "isTurnedOn").set(False)
+    except:
+      print("pyrebase error power limit")
+
     for i in range(len(arduinos)):
       if(arduinos[i].getIsActive() == True):
       # print(arduinos[i].getConsumptionIndex())

@@ -3,7 +3,8 @@ def updateArduino(arduinos, index, MACaddr, shutdownFlag, powerData):
     
     try:
         # if(arduinos[index].getMAC() == MACaddr):      
-        arduinos[index].setPowerData(float(powerData))  
+        arduinos[index].setPowerData(float(powerData))
+        print("Power Data recieved: ", arduinos[index].getPowerDataLatest()[0])  
             # print("AVG: ",arduinos[index].getPowerDataAvg())
         if(not arduinos[index].getIsActive()):
             arduinos[index].setIsActive(True)

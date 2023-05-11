@@ -8,6 +8,8 @@ class ArduinoData:
     deviceID = 0
     shutdown = False
     powerData = []
+    limit = 0
+    powerLimitCalc = 0
     timer = False
     timerTime = 0
     isActive = False
@@ -26,6 +28,19 @@ class ArduinoData:
         # self.powerData.append([powerData,math.trunc(time.time()*1000)])
 
         # self.setEnergyData(powerData)
+    def powerLimit(self):
+        
+        if self.limit > 0 and self.powerLimitCalc < self.limit:
+            self.powerLimitCalc += self.getPowerDataLatest()[0]
+        elif self.limit != 0 and self.powerLimitCalc >= self.limit:
+            self.shutdown = False
+            self.limit = 0
+            self.powerLimitCalc = 0
+            # self.getShutdown()
+        else:
+            self.powerLimitCalc = 0
+        return self.shutdown
+    
     def PowerCalc(self, sec):
         i = 0
         PowerkWh = 0
@@ -42,7 +57,10 @@ class ArduinoData:
 
         self.setPowerDataAvg(PowerkWh)
         return self.getPowerDataAvg()
-    
+    def getLimit(self):
+        return self.Limit
+    def setLimit(self, limit):
+        self.limit = limit
     def getMAC(self):
         return self.MACAddress  
     def setMAC(self, mac):
@@ -56,6 +74,8 @@ class ArduinoData:
     def setIsActive(self, active):
         self.isActive = active
     def setPowerData(self, powerData):
+        if(powerData < 0):
+            powerData = 0
         self.powerData.append([powerData,math.trunc(time.time()*1000)])
         # currentTime = datetime.datetime.now()
         # timeStamp = currentTime.timestamp()
