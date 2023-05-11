@@ -22,7 +22,7 @@ def tcpClient(host, port, arduinos, index):
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # clientSocket.setblocking(False)
         
-        clientSocket.settimeout(0.5) #test
+        clientSocket.settimeout(1.5) #test
 
         clientSocket.connect((host, port))
         # protocol: OK?SHUTDOWNFLAG?TIMERSEC?DATA.

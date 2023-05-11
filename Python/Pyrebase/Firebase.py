@@ -25,8 +25,8 @@ def findIP(arduinos,userid, db):
           arduinos[j].setIsActive(False)
         else:  
           arduinos[j].setIsActive(True)
-    if(temp[0] != "found"):
-      print("unkown device")
+    # if(temp[0] != "found"):
+      # print("unkown device")
   for i in range(len(arduinos)):
     print(arduinos[i].getIP())
 
