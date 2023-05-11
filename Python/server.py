@@ -1,8 +1,8 @@
 import socket
 import sys
 
-port = 8890
-ip = "127.0.0.1"
+port = 8888
+ip = "192.168.137.1"
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 if len(sys.argv) > 1:
@@ -15,7 +15,7 @@ if len(sys.argv) > 1:
         print("Unexpected error. ")
 
 serverSocket.bind((ip,port))
-print("Server started on port %s", port)
+print("Server started on port %s",ip, port)
 num = 100
 while True:
     try:
@@ -26,7 +26,7 @@ while True:
         data = clientSocket.recv(1024)
         print(data.decode())
         
-        sendData="ARDUINO?ab:62:60:81:14:e3?0?"+str(num)+"?.\n"
+        sendData="ARDUINO?ab:62:60:81:14:e3?1?"+str(num)+"?.\n"
         num = (num*2 +23 )%100
         clientSocket.sendall(sendData.encode("ascii"))
 

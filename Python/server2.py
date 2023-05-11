@@ -4,10 +4,6 @@ import sys
 port = 8888
 ip = "127.0.0.1"
 
-hostname = socket.gethostname()
-IPAddr = socket.gethostbyname(hostname)
-print(IPAddr)
-
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 if len(sys.argv) > 1:
@@ -31,8 +27,8 @@ while True:
         data = clientSocket.recv(1024)
         print(data.decode())
         
-        sendData="ARDUINO?dc:62:60:81:14:a2?0?"+str(num)+"?.\n"
-        num = (num*2 +23 )%100
+        sendData="ARDUINO?dc:62:60:81:14:a2?1?"+str(num)+"?.\n"
+        num = (num*2 +47)%100
         clientSocket.sendall(sendData.encode("ascii"))
 
         clientSocket.close()
