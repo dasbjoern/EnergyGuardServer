@@ -55,7 +55,7 @@ class ArduinoData:
             i += 1
         # print(PowerkWh + "Wh")
 
-        self.setPowerDataAvg(PowerkWh)
+        self.setPowerDataAvg(PowerkWh, sec)
         return self.getPowerDataAvg()
     def getLimit(self):
         return self.Limit
@@ -82,8 +82,8 @@ class ArduinoData:
         # dateTime = datetime.fromtimestamp(timeStamp)
         # self.myMap.put(dateTime, powerData)
         
-    def setPowerDataAvg(self, powerData):
-        self.powerDataAvg.append([powerData,math.trunc(time.time()*1000)])
+    def setPowerDataAvg(self, powerData, sec):
+        self.powerDataAvg.append([(powerData/sec),math.trunc(time.time()*1000)])
     def getPowerDataAvg(self):
         return self.powerDataAvg.pop(0)
     def getPowerData(self):
