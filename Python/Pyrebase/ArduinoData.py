@@ -83,7 +83,7 @@ class ArduinoData:
         # self.myMap.put(dateTime, powerData)
         
     def setPowerDataAvg(self, powerData, sec):
-        self.powerDataAvg.append([(powerData/sec),math.trunc(time.time()*1000)])
+        self.powerDataAvg.append([round(powerData/sec, 2),math.trunc(time.time()*1000)])
     def getPowerDataAvg(self):
         return self.powerDataAvg.pop(0)
     def getPowerData(self):
