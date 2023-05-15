@@ -50,10 +50,10 @@ class ArduinoData:
             powerData = self.getPowerDataPopFirst()
             if(powerData[0] < 0):
                 powerData[0]=0
-            PowerkWh += powerData[0]
+            PowerkWh = PowerkWh + powerData[0]
         # arduino.popPowerData()
-            i += 1
-        # print(PowerkWh + "Wh")
+            i = i + 1
+        print(PowerkWh + "Wh")
 
         self.setPowerDataAvg(PowerkWh, sec)
         return self.getPowerDataAvg()
@@ -83,9 +83,10 @@ class ArduinoData:
         # self.myMap.put(dateTime, powerData)
         
     def setPowerDataAvg(self, powerData, sec):
-        self.powerDataAvg.append([round(powerData/sec, 2),math.trunc(time.time()*1000)])
+        print("POWER DATA: ", round(powerData/sec, 2))
+        self.powerDataAvg = [round(powerData/sec, 2),math.trunc(time.time()*1000)]
     def getPowerDataAvg(self):
-        return self.powerDataAvg.pop(0)
+        return self.powerDataAvg
     def getPowerData(self):
         return self.powerData
     def getPowerDataLatest(self):
