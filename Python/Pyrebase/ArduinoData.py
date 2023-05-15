@@ -53,7 +53,7 @@ class ArduinoData:
             PowerkWh = PowerkWh + powerData[0]
         # arduino.popPowerData()
             i = i + 1
-        print(PowerkWh + "Wh")
+        # print(PowerkWh + "Wh")
 
         self.setPowerDataAvg(PowerkWh, sec)
         return self.getPowerDataAvg()
