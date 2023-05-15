@@ -12,16 +12,18 @@ class ArduinoData:
     powerLimitCalc = 0
     timer = False
     timerTime = 0
+    timePowerData = time.time()
     isActive = False
     powerDataAvg = []
     consumptionIndex = 0
     ip = "NoIP"
 
-    def __init__(self, MACaddr, deviceID, shutdown,consumptionIndex):
+    def __init__(self, MACaddr, deviceID, shutdown,consumptionIndex, time):
         self.MACAddress = MACaddr
         self.deviceID = deviceID
         self.shutdown = shutdown
         self.consumptionIndex = consumptionIndex
+        self.timePowerData = time
         # self.timer = timer
         # self.timerTime = timerTime
         # self.isActive = isActive
@@ -73,6 +75,10 @@ class ArduinoData:
         return self.isActive
     def setIsActive(self, active):
         self.isActive = active
+    def setTimePowerData(self, time):
+        self.timePowerData = time
+    def getTimePowerData(self):
+        return self.timePowerData
     def setPowerData(self, powerData):
         if(powerData < 0):
             powerData = 0
@@ -83,7 +89,8 @@ class ArduinoData:
         # self.myMap.put(dateTime, powerData)
         
     def setPowerDataAvg(self, powerData, sec):
-        print("POWER DATA: ", round(powerData/sec, 2))
+        self.powerData = []
+        # print("POWER DATA: ", round(powerData/sec, 2))
         self.powerDataAvg = [round(powerData/sec, 2),math.trunc(time.time()*1000)]
     def getPowerDataAvg(self):
         return self.powerDataAvg

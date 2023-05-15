@@ -62,7 +62,7 @@ for x in devices.each():
   #  'name': 'Lamp', 'timer': False, 'timerEndDate': 0}
   #(self, MACaddr, deviceID, shutdown,consumptionIndex, timer, timerTime):
 for i in range(len(arr)):
-  arduinos.append(ArduinoData(arr[i]['macAddr'],arr[i]['id'], arr[i]['isTurnedOn'],arr[i]['consumptionIndex']))
+  arduinos.append(ArduinoData(arr[i]['macAddr'],arr[i]['id'], arr[i]['isTurnedOn'],arr[i]['consumptionIndex'], time.time()))
   # print(arduinos[i].getMAC())
   # print(arduinos[i].getDeviceID())
   # print(arduinos[i].getShutdown())
@@ -78,14 +78,14 @@ findIP(arduinos,userid, db)
 timer = False
 timerStart = 0
 timerFinished = True
-timerEndTime = 0
+# timerEndTime = 0
 # shutdownFlag = 0
 timeLoop = time.time()
 consumptionIndex = 0
 deviceID = 0
 timeRescan = time.time()
 timePowerData = time.time()
-sendPowerDataInterval = 10
+sendPowerDataInterval = 2
 #todo read in all devices FIREBASE
 statusPathDb = "users/"+ userid +"/status/"
 consumptionPathDb = "users/"+ userid +"/consumption/"
@@ -176,11 +176,12 @@ while(True):
       # print(arduinos[i].getConsumptionIndex())
         # db = firebase.database()
         db.child(statusPathDb + str(i) +"/").child('isActive').set(True)
-        if(round(time.time()-timePowerData >= sendPowerDataInterval)):
-          if(len(arduinos[i].getPowerData()) >= 10):
+        if(round(time.time()-arduinos[i].getTimePowerData() >= sendPowerDataInterval)):
+          if(len(arduinos[i].getPowerData()) >= sendPowerDataInterval):
             db.child(consumptionPathDb + str(i) + "/values").child(arduinos[i].getConsumptionIndex()).set(arduinos[i].PowerCalc(sendPowerDataInterval))
             db.child(statusPathDb + str(i) +"/").child('consumptionIndex').set(arduinos[i].getConsumptionIndex()+1)
-            timePowerData = time.time()
+            arduinos[i].setTimePowerData(time.time())
+            print("Arduino push", i)
       else:
         db.child(statusPathDb + str(i) +"/").child('isActive').set(False)
 
