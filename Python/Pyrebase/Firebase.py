@@ -75,9 +75,10 @@ for i in range(len(arr)):
 findIP(arduinos,userid, db)
 # Hostname = macArr[0][1]
 # print(Hostname)
-timer = 0
+timer = False
 timerStart = 0
 timerFinished = True
+timerEndTime = 0
 # shutdownFlag = 0
 timeLoop = time.time()
 consumptionIndex = 0
@@ -115,8 +116,9 @@ while(True):
       # isActive = statusData['isActive']
       # consumptionIndex = statusData['consumptionIndex']
       # shutdownFlag = statusData['isTurnedOn']
-      # timer = statusData['timer']
-      # timerEndDate = statusData['timerEndDate']
+      # timer = bool(statusData['timer'])
+      # timerEndTime = statusData['timerEndDate']
+      # timerEndTime = timerEndTime/1000
 
     except:
       print("pyrebase error shutdown.")
@@ -131,13 +133,16 @@ while(True):
                 timerEndTime = timerEndTime/1000
                 arduinos[i].setTimer(timer)
                 arduinos[i].setTimerTime(timerEndTime)
-              
+
               if(arduinos[i].getTimer()):
                 if(timerStatus.timerStatus(arduinos[i].getTimerTime())):
                   # print("timer 4", timerStatus.timerStatus(arduinos[i].getTimerTime()))
                   db.child(statusPathDb + str(i) +"/" + "timer").set(False)
                   db.child(statusPathDb + str(i) +"/" + "isTurnedOn").set(not arduinos[i].getShutdown())
                   arduinos[i].setTimer(False)
+            else:
+              arduinos[i].setTimer(False)
+              arduinos[i].setTimerTime(0)
     except:
       print("pyrebase error timer.")
     
